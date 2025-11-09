@@ -1,5 +1,37 @@
 <app-header></app-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
+	<div class="login-container">
+		<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+			<ion-list lines="full">
+				<ion-item [color]="showError('username') ? 'danger' : undefined">
+					<ion-label position="floating">Username</ion-label>
+					<ion-input type="text" formControlName="username" autocomplete="username"></ion-input>
+				</ion-item>
+						@if (showError('username')) {
+							<ion-note color="danger" class="field-error">Username is required.</ion-note>
+				}
 
+				<ion-item [color]="showError('password') ? 'danger' : undefined">
+					<ion-label position="floating">Password</ion-label>
+					<ion-input type="password" formControlName="password" autocomplete="current-password"></ion-input>
+				</ion-item>
+						@if (showError('password')) {
+							<ion-note color="danger" class="field-error">Password is required.</ion-note>
+				}
+			</ion-list>
+
+			@if (auth.error()) {
+				<ion-note color="danger" class="error-message">{{ auth.error() }}</ion-note>
+			}
+
+			<ion-button type="submit" expand="block" [disabled]="form.invalid || auth.isLoading()">
+				@if (auth.isLoading()) {
+					<ion-spinner name="dots"></ion-spinner>
+				} @else {
+					Login
+				}
+			</ion-button>
+		</form>
+	</div>
 </ion-content>

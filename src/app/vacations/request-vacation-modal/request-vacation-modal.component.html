@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Request Vacation</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <ion-list lines="full">
+      <ion-item [color]="showError('date_from') ? 'danger' : undefined">
+        <ion-label position="stacked">From</ion-label>
+        @defer {
+        <ion-datetime-button datetime="dateFromPicker"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+          <ion-datetime id="dateFromPicker" formControlName="date_from" presentation="date"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+        }
+      </ion-item>
+      @if (showError('date_from')) {
+        <ion-note class="field-error" color="danger">Select a start date.</ion-note>
+      }
+
+      <ion-item [color]="showError('date_to') ? 'danger' : undefined">
+        <ion-label position="stacked">To</ion-label>
+        @defer {
+        <ion-datetime-button datetime="dateToPicker"></ion-datetime-button>
+        }
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+
+            <ion-datetime
+            id="dateToPicker"
+            formControlName="date_to"
+            presentation="date"
+            [min]="form.controls.date_from.value || undefined"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      @if (showError('date_to')) {
+        <ion-note class="field-error" color="danger">
+          @if (form.controls.date_to.hasError('dateRange')) {
+            End date must be after the start date.
+          } @else {
+            Select an end date.
+          }
+        </ion-note>
+      }
+
+      <ion-item [color]="showError('reason') ? 'danger' : undefined">
+        <ion-label position="stacked">Reason</ion-label>
+        <ion-textarea
+          formControlName="reason"
+          autoGrow="true"
+          rows="4"
+          maxlength="500"
+        ></ion-textarea>
+      </ion-item>
+      @if (showError('reason')) {
+        <ion-note class="field-error" color="danger">Provide a brief reason.</ion-note>
+      }
+    </ion-list>
+
+    @if (vacationsService.error()) {
+      <ion-note class="submit-error" color="danger">{{ vacationsService.error() }}</ion-note>
+    }
+
+    <ion-button
+      type="submit"
+      expand="block"
+      [disabled]="vacationsService.isSubmitting() || form.invalid"
+    >
+      @if (vacationsService.isSubmitting()) {
+        <ion-spinner name="dots"></ion-spinner>
+      } @else {
+        Submit Request
+      }
+    </ion-button>
+  </form>
+</ion-content>

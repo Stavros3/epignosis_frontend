@@ -1,0 +1,68 @@
+<app-header></app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="page-container ion-padding">
+    <div class="page-actions">
+      <ion-button
+        size="small"
+        (click)="onRequestVacation()"
+        [disabled]="vacationsService.isSubmitting()"
+      >
+        Request Vacation
+      </ion-button>
+    </div>
+
+    @if (vacationsService.error()) {
+      <ion-note color="danger" class="error-message">{{ vacationsService.error() }}</ion-note>
+    }
+
+    @if (vacationsService.isLoading()) {
+      <div class="loading-state">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    } @else {
+      @if (vacationsService.hasVacations()) {
+        <ion-list>
+          @for (
+            vacation of vacationsService.vacations();
+            track trackByVacationId($index, vacation)
+          ) {
+            <ion-item lines="full">
+              <ion-label>
+                <div class="item-header">
+                  <h2>{{ vacation.reason }}</h2>
+                  <ion-badge [color]="statusBadgeColor(vacation.status_id)">
+                    {{ statusLabel(vacation.status_id) }}
+                  </ion-badge>
+                </div>
+                <p>Requested {{ vacation.created_at | date: 'mediumDate' }}</p>
+                <p>{{ vacation.date_from | date: 'mediumDate' }} – {{ vacation.date_to | date: 'mediumDate' }}</p>
+              </ion-label>
+
+              @if (isAdmin()) {
+                <ion-select
+                  interface="action-sheet"
+                  label="Status"
+                  labelPlacement="stacked"
+                  [value]="vacation.status_id"
+                  [disabled]="vacationsService.isSubmitting()"
+                  (ionChange)="onStatusChange(vacation, $any($event.detail.value))"
+                >
+                  @for (option of statusOptions; track option.value) {
+                    <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
+                  }
+                </ion-select>
+              }
+            </ion-item>
+          }
+        </ion-list>
+      } @else {
+        <ion-note color="medium" class="empty-state">No vacation requests yet.</ion-note>
+      }
+    }
+  </div>
+</ion-content>

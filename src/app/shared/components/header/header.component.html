@@ -3,5 +3,13 @@
     <ion-title>
       Epignosis
     </ion-title>
+
+    <div slot="end" class="actions">
+      @if (auth.isAuthenticated()) {
+        <ion-button fill="clear" size="small" (click)="onLogout()">Logout</ion-button>
+      } @else {
+        <ion-button fill="clear" size="small" (click)="onLogin()">Login</ion-button>
+      }
+    </div>
   </ion-toolbar>
 </ion-header>

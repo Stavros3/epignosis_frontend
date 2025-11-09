@@ -1,0 +1,23 @@
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.field-error,
+.submit-error {
+	display: block;
+}
+
+.submit-error {
+	text-align: center;
+}
+
+ion-button {
+	margin-top: 0.5rem;
+}
+
+ion-datetime-button {
+	width: 100%;
+	margin-top: 0.5rem;
+}

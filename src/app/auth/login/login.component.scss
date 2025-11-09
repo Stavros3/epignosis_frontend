@@ -1,0 +1,33 @@
+.login-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100%;
+}
+
+form {
+	width: 100%;
+	max-width: 420px;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+ion-list {
+	background: transparent;
+	padding: 0;
+}
+
+.field-error {
+	margin: 0.25rem 0 0 1rem;
+	font-size: 0.875rem;
+}
+
+.error-message {
+	display: block;
+	text-align: center;
+}
+
+ion-button {
+	height: 3rem;
+}
