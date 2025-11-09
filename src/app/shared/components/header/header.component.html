@@ -6,6 +6,17 @@
 
     <div slot="end" class="actions">
       @if (auth.isAuthenticated()) {
+        <ion-button fill="clear" size="small" (click)="navigateTo('/vacations/list')">
+          Vacations
+        </ion-button>
+        @if (isAdmin()) {
+          <ion-button fill="clear" size="small" (click)="navigateTo('/users/list')">
+            Users
+          </ion-button>
+        }
+      }
+
+      @if (auth.isAuthenticated()) {
         <ion-button fill="clear" size="small" (click)="onLogout()">Logout</ion-button>
       } @else {
         <ion-button fill="clear" size="small" (click)="onLogin()">Login</ion-button>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonButton, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -16,6 +16,8 @@ export class HeaderComponent {
   readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
+  readonly isAdmin = computed(() => this.auth.user()?.roles_id === 1);
+
   onLogout(): void {
     this.auth.logout();
     this.router.navigateByUrl('/auth/login', { replaceUrl: true });
@@ -23,5 +25,9 @@ export class HeaderComponent {
 
   onLogin(): void {
     this.router.navigateByUrl('/auth/login');
+  }
+
+  navigateTo(path: string): void {
+    this.router.navigateByUrl(path);
   }
 }
