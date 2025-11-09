@@ -1,6 +1,59 @@
 <app-header></app-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <h2>User List</h2>
-  <p>This is where the list of users will be displayed.</p>
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="page-container ion-padding">
+    <div class="page-actions">
+      <ion-button size="small" (click)="onCreate()" [disabled]="state.isSubmitting()">
+        Create User
+      </ion-button>
+    </div>
+
+    @if (state.error()) {
+      <ion-note color="danger" class="error-message">{{ state.error() }}</ion-note>
+    }
+
+    @if (state.isLoading()) {
+      <div class="loading-state">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    } @else {
+      @if (state.hasUsers()) {
+        <ion-list>
+          @for (user of state.users(); track trackByUserId($index, user)) {
+            <ion-item lines="full">
+              <ion-label>
+                <h2>{{ user.name }}</h2>
+                <p>{{ user.email }}</p>
+              </ion-label>
+              <ion-buttons slot="end">
+                <ion-button
+                  fill="clear"
+                  size="small"
+                  [disabled]="state.isSubmitting()"
+                  (click)="onEdit(user)"
+                >
+                  Edit
+                </ion-button>
+                <ion-button
+                  fill="clear"
+                  size="small"
+                  color="danger"
+                  [disabled]="state.isSubmitting()"
+                  (click)="onDelete(user)"
+                >
+                  Delete
+                </ion-button>
+              </ion-buttons>
+            </ion-item>
+          }
+        </ion-list>
+      } @else {
+        <ion-note color="medium" class="empty-state">No users available.</ion-note>
+      }
+    }
+  </div>
 </ion-content>

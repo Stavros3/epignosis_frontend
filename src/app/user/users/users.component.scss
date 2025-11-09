@@ -1,0 +1,33 @@
+.page-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	min-height: 100%;
+}
+
+.page-actions {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.error-message,
+.empty-state {
+	display: block;
+	text-align: center;
+}
+
+.loading-state {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 8rem;
+}
+
+ion-item h2 {
+	font-size: 1rem;
+	margin-bottom: 0.25rem;
+}
+
+ion-item p {
+	color: var(--ion-color-medium);
+}

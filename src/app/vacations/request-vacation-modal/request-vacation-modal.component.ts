@@ -48,7 +48,6 @@ import { VacationsService } from '../services/vacations.service';
     IonNote,
     IonSpinner,
   ],
-  providers: [ModalController],
 })
 export class RequestVacationComponentModal {
   private readonly fb = inject(FormBuilder);
@@ -107,8 +106,8 @@ export class RequestVacationComponentModal {
   }
 
   private validateDateRange(): void {
-  const fromValue = this.form.controls.date_from.value;
-  const toValue = this.form.controls.date_to.value;
+    const fromValue = this.form.controls.date_from.value;
+    const toValue = this.form.controls.date_to.value;
 
     const fromDate = fromValue ? new Date(fromValue) : null;
     const toDate = toValue ? new Date(toValue) : null;

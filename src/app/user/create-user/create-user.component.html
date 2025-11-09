@@ -1,6 +1,69 @@
-<app-header></app-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ mode === 'create' ? 'Create User' : 'Edit User' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  test create user works!
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <ion-list lines="full">
+      <ion-item [color]="showError('name') ? 'danger' : undefined">
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+      @if (showError('name')) {
+        <ion-note class="field-error" color="danger">Name is required.</ion-note>
+      }
+
+      <ion-item [color]="showError('email') ? 'danger' : undefined">
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      @if (showError('email')) {
+        <ion-note class="field-error" color="danger">Enter a valid email.</ion-note>
+      }
+
+      <ion-item [color]="showError('employ_code') ? 'danger' : undefined">
+        <ion-label position="stacked">Employee Code</ion-label>
+        <ion-input type="number" formControlName="employ_code"></ion-input>
+      </ion-item>
+      @if (showError('employ_code')) {
+        <ion-note class="field-error" color="danger">Enter a valid employee code.</ion-note>
+      }
+
+      <ion-item [color]="showError('username') ? 'danger' : undefined">
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input type="text" formControlName="username"></ion-input>
+      </ion-item>
+      @if (showError('username')) {
+        <ion-note class="field-error" color="danger">Username is required.</ion-note>
+      }
+
+      <ion-item [color]="showError('password') ? 'danger' : undefined">
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      @if (showError('password')) {
+        <ion-note class="field-error" color="danger">
+          {{ mode === 'create' ? 'Password must be at least 6 characters.' : 'Password must be at least 6 characters when provided.' }}
+        </ion-note>
+      }
+    </ion-list>
+
+    @if (state.error()) {
+      <ion-note class="submit-error" color="danger">{{ state.error() }}</ion-note>
+    }
+
+    <ion-button type="submit" expand="block" [disabled]="state.isSubmitting() || form.invalid">
+      @if (state.isSubmitting()) {
+        <ion-spinner name="dots"></ion-spinner>
+      } @else {
+        {{ mode === 'create' ? 'Create User' : 'Update User' }}
+      }
+    </ion-button>
+  </form>
 </ion-content>
 
